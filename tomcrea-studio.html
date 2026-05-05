@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TomCrea Studio — Photographe & Vidéaste Sportif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #E8FF00;
+    --dark: #0a0a0a;
+    --mid: #141414;
+    --card: #1a1a1a;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f0;
+    --muted: rgba(240,240,240,0.5);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.08s linear, width 0.2s, height 0.2s;
+    opacity: 0.6;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #000 !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 100px;
+    font-weight: 700 !important;
+    color: #000;
+    transition: transform 0.15s, box-shadow 0.15s !important;
+  }
+  .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 20px rgba(232,255,0,0.35); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1400 50%, #0a0a0a 100%);
+    z-index: 0;
+  }
+
+  /* Animated grid lines */
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 1;
+    opacity: 0.06;
+    background-image:
+      linear-gradient(to right, #fff 1px, transparent 1px),
+      linear-gradient(to bottom, #fff 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    from { background-position: 0 0; }
+    to { background-position: 80px 80px; }
+  }
+
+  .hero-noise {
+    position: absolute; inset: 0; z-index: 2;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+
+  /* Big accent shape */
+  .hero-shape {
+    position: absolute; right: -8%; top: 10%;
+    width: 55vw; height: 80vh;
+    background: var(--accent);
+    opacity: 0.04;
+    clip-path: polygon(30% 0%, 100% 15%, 100% 85%, 60% 100%, 0% 90%, 10% 30%);
+    z-index: 1;
+    animation: shapePulse 8s ease-in-out infinite;
+  }
+  @keyframes shapePulse {
+    0%, 100% { opacity: 0.04; transform: scale(1); }
+    50% { opacity: 0.07; transform: scale(1.02); }
+  }
+
+  .hero-tag {
+    position: relative; z-index: 3;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(232,255,0,0.12);
+    border: 0.5px solid rgba(232,255,0,0.3);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    width: fit-content;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: blink 1.5s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero-title {
+    position: relative; z-index: 3;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    animation: fadeUp 0.9s ease 0.35s both;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-bottom {
+    position: relative; z-index: 3;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: 3rem;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 420px;
+    font-weight: 300;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+
+  .hero-cta-group { display: flex; gap: 1rem; align-items: center; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(232,255,0,0.4); }
+
+  .btn-ghost {
+    border: 0.5px solid var(--border);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    cursor: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Syne', sans-serif;
+    animation: fadeUp 1s ease 1s both;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.6)} }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
+  }
+  .stat-item {
+    flex: 1; padding: 2rem 3rem;
+    border-right: 0.5px solid var(--border);
+    transition: background 0.3s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--card); }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    font-family: 'Syne', sans-serif;
+    margin-top: 0.25rem;
+  }
+
+  /* Sections */
+  section { padding: 7rem 4rem; }
+
+  .section-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  /* Services */
+  .services-intro { max-width: 500px; margin-bottom: 4rem; }
+  .services-intro p { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-top: 1rem; font-weight: 300; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .service-card {
+    background: var(--dark);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card:hover { background: var(--card); }
+  .service-card.featured { background: var(--accent); }
+  .service-card.featured .service-icon,
+  .service-card.featured .service-name,
+  .service-card.featured .service-desc,
+  .service-card.featured .service-soon { color: #000; }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .service-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .service-card.featured .service-desc { color: rgba(0,0,0,0.65); }
+
+  .service-soon {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.68rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.06);
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+  }
+
+  /* Portfolio strip */
+  .portfolio-section { padding-bottom: 0; }
+  .portfolio-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 300px 300px;
+    gap: 1px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .port-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--card);
+    cursor: none;
+  }
+  .port-item:first-child { grid-row: 1 / 3; }
+
+  .port-inner {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .port-item:hover .port-inner { opacity: 1; }
+
+  .port-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .port-item:hover .port-bg { transform: scale(1.04); }
+
+  /* Gradient placeholder backgrounds */
+  .bg-sport { background: linear-gradient(135deg, #1a1a0a 0%, #2d2d00 50%, #1a0a0a 100%); }
+  .bg-lifestyle { background: linear-gradient(135deg, #0a0a1a 0%, #0d1a2d 100%); }
+  .bg-event { background: linear-gradient(135deg, #1a0a1a 0%, #2d0a2d 100%); }
+  .bg-mariage { background: linear-gradient(135deg, #0a1a1a 0%, #0a2d2d 100%); }
+  .bg-video { background: linear-gradient(135deg, #1a0a0a 0%, #2d1a0a 100%); }
+
+  /* Sport visual */
+  .sport-visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .sport-circle {
+    width: 200px; height: 200px;
+    border: 1.5px solid rgba(232,255,0,0.2);
+    border-radius: 50%;
+    position: absolute;
+    animation: rotate 15s linear infinite;
+  }
+  .sport-circle:nth-child(2) { width: 140px; height: 140px; animation-duration: 10s; animation-direction: reverse; border-color: rgba(232,255,0,0.1); }
+  .sport-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+  }
+  @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .port-cat {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .port-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  /* About */
+  .about-section { background: var(--mid); }
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+
+  .about-left .section-title { margin-bottom: 1.5rem; }
+  .about-left p { color: var(--muted); font-size: 1rem; line-height: 1.8; font-weight: 300; }
+  .about-left p + p { margin-top: 1rem; }
+
+  .about-badges {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    border: 0.5px solid var(--border);
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .badge:hover { border-color: var(--accent); color: var(--accent); }
+  .badge.accent { background: var(--accent); color: #000; border-color: transparent; }
+
+  .about-right {
+    position: relative;
+  }
+  .about-card {
+    background: var(--dark);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+  }
+  .about-age {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .about-age-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+  .about-divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
+  .about-quote {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    font-style: italic;
+    font-weight: 300;
+  }
+  .about-quote strong { color: var(--text); font-style: normal; font-weight: 500; }
+  .freelance-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1.5rem;
+    background: rgba(232,255,0,0.08);
+    border: 0.5px solid rgba(232,255,0,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* DEVIS SECTION — bien visible */
+  .devis-section {
+    background: var(--accent);
+    padding: 7rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .devis-bg-text {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20vw;
+    color: rgba(0,0,0,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .devis-inner {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .devis-left .devis-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.5);
+    margin-bottom: 1rem;
+  }
+
+  .devis-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 6.5rem);
+    line-height: 0.9;
+    color: #000;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .devis-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(0,0,0,0.65);
+    font-weight: 300;
+    max-width: 380px;
+  }
+
+  .devis-form {
+    background: #000;
+    border-radius: 20px;
+    padding: 3rem;
+  }
+
+  .form-row { margin-bottom: 1.25rem; }
+  .form-label {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+  }
+  .form-select { cursor: none; }
+  .form-select option { background: #1a1a1a; }
+  .form-textarea { resize: none; height: 100px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .btn-devis {
+    width: 100%;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 1.1rem;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: none;
+    margin-top: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-devis:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(232,255,0,0.5); }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem 0;
+  }
+  .form-success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .form-success h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .form-success p { color: var(--muted); font-size: 0.9rem; }
+
+  /* Footer */
+  footer {
+    background: var(--mid);
+    border-top: 0.5px solid var(--border);
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem 5rem; }
+    .hero-title { font-size: clamp(3rem, 15vw, 6rem); }
+    .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
+    .hero-cta-group { flex-wrap: wrap; }
+    .stats-bar { flex-direction: column; }
+    .stat-item { border-right: none; border-bottom: 0.5px solid var(--border); }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px 200px; }
+    .port-item:first-child { grid-row: auto; }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .devis-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .devis-section { padding: 5rem 1.5rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">TOM<span>CREA</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#devis" class="nav-cta">Demander un devis</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-shape"></div>
+
+  <div class="hero-tag">
+    Disponible — Angers & toute la France
+  </div>
+
+  <h1 class="hero-title">
+    Photo<br>& <em>Vidéo</em><br>Sport.
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Photographe & vidéaste <strong>freelance</strong>.<br>
+      Sport, lifestyle, mariage, concerts & festivals.<br>
+      Basé à <strong>Angers</strong>, actif partout en France.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#devis" class="btn-primary">
+        Demander un devis
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#portfolio" class="btn-ghost">Voir le travail</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">17</div>
+    <div class="stat-label">Ans, déjà freelance</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">100%</div>
+    <div class="stat-label">Indépendant</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">PDL+</div>
+    <div class="stat-label">Angers & France entière</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">5+</div>
+    <div class="stat-label">Disciplines couvertes</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro">
+    <div class="section-tag">Ce que je fais</div>
+    <h2 class="section-title">Mes<br>Services</h2>
+    <p>Du terrain au montage, je m'occupe de tout. Sport en priorité — mais aucun événement ne me résiste.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card featured">
+      <span class="service-icon">⚡</span>
+      <div class="service-name">Photo & Vidéo Sportive</div>
+      <p class="service-desc">Captures d'action, reportages sportifs, clips de compétition. Football, running, arts martiaux, sports collectifs — on fonce ensemble.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🎬</span>
+      <div class="service-name">Vidéo & Montage</div>
+      <p class="service-desc">Aftermovies, highlight reels, films courts. Montage pro, motion design, rendu cinématique.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">✨</span>
+      <div class="service-name">Lifestyle & Portrait</div>
+      <p class="service-desc">Séances portrait, lifestyle urbain, contenu pour réseaux sociaux. Un regard artistique, un rendu naturel.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💍</span>
+      <div class="service-name">Mariage</div>
+      <p class="service-desc">Reportage de mariage en photo et vidéo. Des souvenirs authentiques, une esthétique moderne.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🎵</span>
+      <div class="service-name">Concerts & Festivals</div>
+      <p class="service-desc">Capturer l'énergie live, l'atmosphère unique. Reportages événementiels, ambiance scène.</p>
+      <span class="service-soon">En développement</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📍</span>
+      <div class="service-name">Partout en France</div>
+      <p class="service-desc">Basé à Angers, je me déplace partout. Devis déplacement sur demande, réactivité garantie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="portfolio-section">
+  <div class="portfolio-header">
+    <div>
+      <div class="section-tag">Mon travail</div>
+      <h2 class="section-title">Portfolio</h2>
+    </div>
+    <a href="mailto:contact@tomcrea.studio" class="btn-ghost" style="flex-shrink:0">Voir plus</a>
+  </div>
+
+  <div class="portfolio-grid">
+    <div class="port-item bg-sport">
+      <div class="port-bg">
+        <div class="sport-visual">
+          <div class="sport-circle">
+            <div class="sport-dot" style="top:0;left:50%;transform:translate(-50%,-50%)"></div>
+          </div>
+          <div class="sport-circle" style="animation-duration:10s;animation-direction:reverse"></div>
+          <span style="font-family:'Bebas Neue';font-size:5rem;color:rgba(232,255,0,0.15);position:absolute">SPORT</span>
+        </div>
+      </div>
+      <div class="port-inner">
+        <div class="port-cat">Photo & Vidéo</div>
+        <div class="port-name">Action Sportive</div>
+      </div>
+    </div>
+
+    <div class="port-item bg-lifestyle">
+      <div class="port-bg" style="display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <span style="font-family:'Bebas Neue';font-size:4rem;color:rgba(255,255,255,0.05);transform:rotate(-15deg)">LIFE<br>STYLE</span>
+        <div style="position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,0.08)"></div>
+        <div style="position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.03)"></div>
+      </div>
+      <div class="port-inner">
+        <div class="port-cat">Portrait</div>
+        <div class="port-name">Lifestyle</div>
+      </div>
+    </div>
+
+    <div class="port-item bg-event">
+      <div class="port-bg" style="display:flex;align-items:center;justify-content:center">
+        <span style="font-family:'Bebas Neue';font-size:2.5rem;color:rgba(200,100,255,0.1);text-align:center">CONCERT<br>FESTIVAL</span>
+      </div>
+      <div class="port-inner">
+        <div class="port-cat">Bientôt</div>
+        <div class="port-name">Live & Events</div>
+      </div>
+    </div>
+
+    <div class="port-item bg-mariage">
+      <div class="port-bg" style="display:flex;align-items:center;justify-content:center">
+        <span style="font-family:'Bebas Neue';font-size:3rem;color:rgba(100,200,200,0.1)">MARIAGE</span>
+      </div>
+      <div class="port-inner">
+        <div class="port-cat">Événement</div>
+        <div class="port-name">Mariage</div>
+      </div>
+    </div>
+
+    <div class="port-item bg-video">
+      <div class="port-bg" style="display:flex;align-items:center;justify-content:center">
+        <div style="width:60px;height:60px;border-radius:50%;border:1.5px solid rgba(232,255,0,0.2);display:flex;align-items:center;justify-content:center">
+          <div style="width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:18px solid rgba(232,255,0,0.4);margin-left:4px"></div>
+        </div>
+      </div>
+      <div class="port-inner">
+        <div class="port-cat">Montage</div>
+        <div class="port-name">Aftermovie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="section-tag">Qui suis-je</div>
+      <h2 class="section-title">TomCrea<br>Studio</h2>
+      <p>Passionné de photo et de vidéo depuis tout jeune, j'ai lancé <strong>TomCrea Studio</strong> pour transformer cette passion en vrai projet freelance. Mon terrain de jeu ? Le sport avant tout — mais je suis curieux de tout.</p>
+      <p>Basé à <strong>Angers</strong>, je me déplace sans problème sur toute la France pour tes événements, tes compétitions, ton mariage ou tes concerts à venir.</p>
+      <div class="about-badges">
+        <span class="badge accent">Freelance</span>
+        <span class="badge">Angers</span>
+        <span class="badge">Sport</span>
+        <span class="badge">Lifestyle</span>
+        <span class="badge">Mariage</span>
+        <span class="badge">Vidéaste</span>
+        <span class="badge">Photographe</span>
+        <span class="badge">France entière</span>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <div class="about-card">
+        <div class="about-age">17</div>
+        <div class="about-age-label">ans — Freelance passionné</div>
+        <div class="about-divider"></div>
+        <p class="about-quote">
+          "Je crois que chaque <strong>instant mérite d'être capturé avec intensité</strong>. En photo comme en vidéo, je cherche l'émotion brute, le mouvement vrai."
+        </p>
+        <div class="freelance-badge">
+          <span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block"></span>
+          Disponible pour devis
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVIS — bien visible -->
+<section id="devis" class="devis-section">
+  <div class="devis-bg-text">DEVIS</div>
+  <div class="devis-inner">
+    <div class="devis-left">
+      <div class="devis-tag">Contacte-moi</div>
+      <h2 class="devis-title">Demande<br>ton<br>devis.</h2>
+      <p class="devis-desc">Décris ton projet — sport, mariage, événement, vidéo — et je te réponds rapidement avec une offre sur mesure. Aucun engagement.</p>
+      <div style="margin-top:2rem;display:flex;flex-direction:column;gap:1rem">
+        <a href="mailto:contact@tomcrea.studio" style="color:#000;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:0.5rem">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#000" stroke-width="1.2"/><path d="M1 5l7 5 7-5" stroke="#000" stroke-width="1.2"/></svg>
+          contact@tomcrea.studio
+        </a>
+        <a href="https://instagram.com/tomcrea.studio" style="color:#000;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:0.5rem">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="4" stroke="#000" stroke-width="1.2"/><circle cx="8" cy="8" r="3.2" stroke="#000" stroke-width="1.2"/><circle cx="11.5" cy="4.5" r="0.7" fill="#000"/></svg>
+          @tomcrea.studio
+        </a>
+      </div>
+    </div>
+
+    <div class="devis-right">
+      <div class="devis-form">
+        <div id="formContent">
+          <div class="form-row-2">
+            <div class="form-row" style="margin-bottom:0">
+              <label class="form-label">Prénom</label>
+              <input class="form-input" type="text" placeholder="Tom" id="fname">
+            </div>
+            <div class="form-row" style="margin-bottom:0">
+              <label class="form-label">Nom</label>
+              <input class="form-input" type="text" placeholder="Dupont" id="lname">
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:1.25rem">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="ton@email.com" id="email">
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Type de prestation</label>
+            <select class="form-select" id="service">
+              <option value="">Choisir...</option>
+              <option>Photo Sportive</option>
+              <option>Vidéo Sportive</option>
+              <option>Photo + Vidéo Sport</option>
+              <option>Mariage (Photo)</option>
+              <option>Mariage (Photo + Vidéo)</option>
+              <option>Aftermovie / Montage</option>
+              <option>Lifestyle / Portrait</option>
+              <option>Concert / Festival</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Lieu / Ville</label>
+            <input class="form-input" type="text" placeholder="Angers, Paris, ..." id="location">
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Description du projet</label>
+            <textarea class="form-textarea" placeholder="Décris ton projet, la date, le contexte..." id="desc"></textarea>
+          </div>
+
+          <button class="btn-devis" onclick="submitForm()">
+            Envoyer ma demande →
+          </button>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">⚡</div>
+          <h3>Demande envoyée !</h3>
+          <p style="color:rgba(255,255,255,0.5);margin-top:0.5rem">Je te réponds dès que possible. À très vite !</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">TOM<span>CREA</span></a>
+  <p class="footer-copy">© 2025 TomCrea Studio — Tous droits réservés</p>
+  <div class="footer-links">
+    <a href="https://instagram.com/tomcrea.studio">Instagram</a>
+    <a href="mailto:contact@tomcrea.studio">Email</a>
+    <a href="#devis">Devis</a>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .stat-item, .port-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// Form submit
+function submitForm() {
+  const fname = document.getElementById('fname').value;
+  const email = document.getElementById('email').value;
+  const service = document.getElementById('service').value;
+  if (!fname || !email || !service) {
+    alert('Merci de remplir au moins : prénom, email et type de prestation.');
+    return;
+  }
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
